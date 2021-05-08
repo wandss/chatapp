@@ -1,0 +1,1 @@
+docker run -d --name chatappdb -e POSTGRES_PASSWORD=102030 -e POSTGRES_USER=wand -e POSTGRES_DB=chatappdb -p 5432:5432 -v chatapp-vol:/var/lib/postgresql/data postgres

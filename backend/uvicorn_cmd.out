@@ -1,0 +1,1 @@
+uvicorn chatapp.asgi:application --reload
