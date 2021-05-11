@@ -1,7 +1,5 @@
-from django.shortcuts import render
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from django.shortcuts import render, HttpResponse
 from .models import Room
-from .serializers import RoomSerializer
 
 
 def index(request):
@@ -10,15 +8,11 @@ def index(request):
 def room(request, room_name):
     #TODO: Check if room Exists
     # MOVE API TO api direcotry
+    # rooms can't have space for names. validate
+
+    if not Room.objects.filter(name__icontains=room_name).exists():
+      return HttpResponse('Change this to 404')
+
     return render(request, 'chat/room.html',{
         'room_name': room_name
     })
-
-
-class RoomListAPIView(ListAPIView):
-    queryset = Room.objects.all()
-    serializer_class = RoomSerializer
-
-class RoomRetrieveAPIView(RetrieveAPIView):
-    queryset = Room.objects.all()
-    serializer_class = RoomSerializer

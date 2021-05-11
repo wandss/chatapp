@@ -60,9 +60,9 @@ export default new Vuex.Store({
     },
     connectToRoom (context, payload){
       let room = null
-      //if (context.state.room !== null ){
-      //  context.commit('closeSocket')
-      //}
+      if (context.state.room !== null ){
+        context.commit('closeSocket')
+      }
       room = new WebSocket("ws://localhost:8000/ws/chat/"+payload+"/")
       context.commit('connectRoom', room)
       room.onmessage = (event) => {
@@ -76,13 +76,6 @@ export default new Vuex.Store({
       axios.post('/api/v1/room/rooms', payload, {headers: headers})
         .then(()=>context.dispatch('fetchRooms'))
     }
-    /*
-    sendMessageToRoom(context, payload){
-      console.log(context, payload)
-      context.state.room.send({'message': payload})
-    }
-    */
-
   },
   modules: {
   }

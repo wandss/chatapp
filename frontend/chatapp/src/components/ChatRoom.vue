@@ -5,7 +5,7 @@
     </h3>
       <div v-for="item in getMessages" :key="item.id">
         <ChatMessage :text="item.message" :from="item.username"
-        :variant="$store.state.username == item.username?'primary':'info'"
+        :variant="$store.state.username == item.username?'dark':'primary'"
         :timestamp="item.sent"
         />
       </div>

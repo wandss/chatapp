@@ -39,7 +39,7 @@ export default {
   methods:{
     joinRoom(room){
       this.$store.commit('setRoomName', room)
-      this.$store.dispatch('connectToRoom', room)
+      this.$store.dispatch('connectToRoom', room.toLowerCase())
     },
     createRoom(){
       const data = {'name': this.newRoomName}
