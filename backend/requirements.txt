@@ -39,3 +39,4 @@ uvicorn==0.13.4
 websocket-client==0.59.0
 websockets==9.0.1
 zope.interface==5.4.0
+uWSGI>=2.0.18,<2.1
