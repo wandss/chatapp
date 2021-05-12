@@ -19,6 +19,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat/', include('room.urls')),
+    path('', include('frontend.urls')),
     path('api/v1/room/', include('room.api.urls')),
-    path('api/v1/frontend/', include('frontend.urls'))
+    #path('api/v1/frontend/', include('frontend.urls'))
 ]

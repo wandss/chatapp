@@ -48,7 +48,7 @@ export default {
       }
       else {
         console.log("loggin in")
-        axios.post('/api/v1/frontend/login', loginCredentials)
+        axios.post('/login', loginCredentials)
          .then(resp=>{
            this.$store.commit('setUsername', resp.data.username)
            this.$store.commit('setCsrftoken', this.$cookies.get('csrftoken'))
