@@ -7,11 +7,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     csrftoken: null,
+    loginMessage: null,
     roomName: '',
     rooms: [],
     room: null,
     messages: [],
-    username: 'wand',
+    username: "",
     message: {
       "id": '',
       "username": '',
@@ -42,6 +43,12 @@ export default new Vuex.Store({
     },
     setCsrftoken(state, payload){
       state.csrftoken = payload
+    },
+    setLoginMessage(state, payload){
+      state.loginMessage = payload
+    },
+    setUsername(state, payload){
+      state.username = payload
     }
   },
   getters: {
@@ -75,6 +82,18 @@ export default new Vuex.Store({
       const headers = {"X-CSRFTOKEN": context.state.csrftoken}
       axios.post('/api/v1/room/rooms', payload, {headers: headers})
         .then(()=>context.dispatch('fetchRooms'))
+    },
+    login(context, payload){
+      axios.post('/api/v1/frontend/login', payload)
+       .then(resp=>{
+         context.commit('setUsername', resp.data.username)
+       })
+      .catch(err=>{
+        console.log(err)
+        context.commit('setLoginMessage', 'Invalid Credentials' )
+       })
+
+
     }
   },
   modules: {

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-jl5&qh005)#rkm6&g33q(fn49jsympy#yg^8s%go8*gz9*c7u%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
+    'stock',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +82,16 @@ WSGI_APPLICATION = 'bot.wsgi.application'
 #    }
 #}
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'botdb',
+        'USER': 'wand',
+        'PASSWORD': '102030',
+        'HOST': '127.0.0.1',
+        'PORT': '5433'
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -123,3 +135,14 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ASGI_APPLICATION = 'bot.asgi.application'
+# Channels
+CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": [('127.0.0.1', 6379)]
+            }
+        }
+}

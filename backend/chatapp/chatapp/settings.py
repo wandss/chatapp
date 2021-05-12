@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'channels',
     'rest_framework',
     'room',
-    'message'
+    'message',
+    'frontend'
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,9 @@ CHANNEL_LAYERS = {
         }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':(
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}

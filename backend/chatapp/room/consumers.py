@@ -1,4 +1,6 @@
 import json
+import re
+import websocket
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.contrib.auth import get_user_model
@@ -45,7 +47,17 @@ class ChatConsumer(WebsocketConsumer):
         username = text_data_json['username']
         id = text_data_json['id']
         sent = text_data_json['sent']
+
+        if re.match(r'^/stock=.*$', message) is not None:
+            stock_code = {"stock": message.split('=')[-1]}
+            self.stock_price(stock_code)
+            message = self.message
+            #SET THE USERNAME TO BE THE ROBOT USERNAME
+
         self.store_message(message, username)
+        message = self.new_message.text
+        id = str(self.new_message.id)
+        sent = str(self.new_message.create_date)
 
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
@@ -85,6 +97,19 @@ class ChatConsumer(WebsocketConsumer):
             owner=user
         )
         message.save()
+        self.new_message = message
+
+    def stock_price(self, stock):
+        ws = websocket.WebSocket()
+        ws.connect('ws://127.0.0.1:8001/ws/stock/price/')
+        ws.send(json.dumps(stock))
+        stock = json.loads(ws.recv())
+        self.message = stock['stock']
+
+
+
+
+
 
 #TODO:
 # Here when the /stock=stock_code

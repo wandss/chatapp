@@ -1,5 +1,5 @@
-from django.shortcuts import render, HTTPResponse
+from django.shortcuts import render, HttpResponse
 
-def csv_parser(request, stock):
+def csv_parser(request):
 
-    return HTTPResponse('YAY')
+    return HttpResponse('YAY')

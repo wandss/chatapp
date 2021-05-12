@@ -10,7 +10,6 @@
        To create a room, enter the room name below and hit enter or press the save button
        </p>
       </b-alert>
-
     </b-list-group>
     <b-list-group>
       <b-list-group-item button
@@ -42,7 +41,8 @@ export default {
       this.$store.dispatch('connectToRoom', room.toLowerCase())
     },
     createRoom(){
-      const data = {'name': this.newRoomName}
+      const newRoomName = this.newRoomName.split(' ').join('')
+      const data = {'name': newRoomName}
       this.$store.dispatch('createRoom', data)
       this.newRoomName = ''
     }
