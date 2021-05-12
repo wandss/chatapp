@@ -20,7 +20,3 @@ class AuthenticateAPIView(APIView):
             user.save()
 
         return Response({"username": user.username}, status.HTTP_200_OK)
-
-        import pdb; pdb.set_trace()  # DEBUG
-
-

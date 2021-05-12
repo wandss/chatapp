@@ -83,18 +83,6 @@ export default new Vuex.Store({
       axios.post('/api/v1/room/rooms', payload, {headers: headers})
         .then(()=>context.dispatch('fetchRooms'))
     },
-    login(context, payload){
-      axios.post('/api/v1/frontend/login', payload)
-       .then(resp=>{
-         context.commit('setUsername', resp.data.username)
-       })
-      .catch(err=>{
-        console.log(err)
-        context.commit('setLoginMessage', 'Invalid Credentials' )
-       })
-
-
-    }
   },
   modules: {
   }

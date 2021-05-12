@@ -5,13 +5,14 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.contrib.auth import get_user_model
 from .models import Room
+from message.models import Message
 
 class ChatConsumer(WebsocketConsumer):
 
     def load_data(self):
         messages = Room.objects.get(
                 name__iexact=self.room_name
-                ).messages.all()
+                ).messages.order_by('-create_date')[:50][::-1]
         for message in messages:
             self.chat_message({
                 'id': str(message.id),
@@ -50,14 +51,19 @@ class ChatConsumer(WebsocketConsumer):
 
         if re.match(r'^/stock=.*$', message) is not None:
             stock_code = {"stock": message.split('=')[-1]}
+            User = get_user_model()
+            user = User.objects.get_or_create(username='StockBot',
+                    password="stockbotpwd")
             self.stock_price(stock_code)
             message = self.message
-            #SET THE USERNAME TO BE THE ROBOT USERNAME
+            self.scope['user'] = user[0]
+            usrname = user[0].username
 
         self.store_message(message, username)
         message = self.new_message.text
         id = str(self.new_message.id)
         sent = str(self.new_message.create_date)
+        username = self.new_message.owner.username
 
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
