@@ -86,10 +86,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'botdb',
-        'USER': 'wand',
+        'USER': 'bot',
         'PASSWORD': '102030',
-        'HOST': '127.0.0.1',
-        'PORT': '5433'
+        'HOST': 'botdb',
+        'PORT': '5432'
     }
 }
 
@@ -142,7 +142,7 @@ CHANNEL_LAYERS = {
         'default': {
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
-                "hosts": [('127.0.0.1', 6379)]
+                "hosts": [('chatredis', 6379)]
             }
         }
 }

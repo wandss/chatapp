@@ -1,31 +1,55 @@
-version: "3.7"
-
+version: "2.3"
 services:
+
   chatapp:
-    build:
-      context: .
-    container_name: django
+    build: ./chatapp
+    container_name: chatapp
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./chatapp:/chatapp
     ports:
       - "8000:8000"
-    #depends_on:
-    #  - chatdb
-  #chatdb:
-  #  image: postgres
-  #  container_name: chatdb
-  #  environments:
-  #    - POSTGRES_PASSWORD=102030
-  #    - POSTGRES_USER=wand
-  #    - POSTGRES_DB=chatappdb
-  #  ports:
-  #    - "5432:5432"
-  #redis:
-  #  image: redis:5
-  #  container_name: chatredis
-  #  ports:
-  #    - "6379:6379"
+    restart: unless-stopped
+    depends_on:
+      - chatdb
+
+  botapp:
+    build: ./bot
+    container_name: botapp
+    command: python manage.py runserver 0.0.0.0:8001
+    volumes: 
+      - ./bot:/botapp
+    ports:
+      - "8001:8001"
+    restart: unless-stopped
+    depends_on:
+      - botdb
+
+  chatdb:
+    image: postgres
+    container_name: chatdb
+    environment:
+      - POSTGRES_PASSWORD=102030
+      - POSTGRES_USER=chat
+      - POSTGRES_DB=chatapp
+    ports:
+      - "5432:5432"
+
+  botdb:
+    image: postgres
+    container_name: botdb
+    environment:
+     - POSTGRES_PASSWORD=102030
+     - POSTGRES_USER=bot
+     - POSTGRES_DB=botdb
+    ports:
+      - "5433:5432"
+
+  redis:
+    image: redis:5
+    container_name: chatredis
+    ports:
+      - "6379:6379"
 
 
 
